@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Perjanjian - RSU Delima</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">RD</div>
+        <div class="hamburger">☰</div>
+        <ul class="nav-menu">
+            <li><a href="#">Beranda</a></li>
+            <li><a href="#">Profil</a></li>
+            <li><a href="#">Fasilitas</a></li>
+            <li><a href="#">Pelayanan</a></li>
+            <li><a href="#">Kontak</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="#" id="login-link" class="btn">Login</a>
+            <div class="language-switch">
+                <a href="#" class="lang active" data-lang="id"><i class="fas fa-globe"></i> ID</a> | 
+                <a href="#" class="lang" data-lang="en"><i class="fas fa-globe"></i> EN</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="splash-screen">
+        <div class="splash-content">
+            <h1>Selamat Datang di RSU Delima</h1>
+            <p>Jadwalkan kunjungan Anda dengan mudah dan cepat!</p>
+            <a href="#" id="start-link" class="btn primary">Mulai Sekarang</a>
+        </div>
+    </section>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h3><i class="fas fa-info-circle"></i> Info Cepat</h3>
+                <ul>
+                    <li><i class="fas fa-clock"></i> Jam Operasional: 08:00 - 20:00 WIB</li>
+                    <li id="status-operational"><i class="fas fa-store"></i> Status: <span id="status-text"></span></li>
+                    <li><i class="fas fa-phone"></i> Darurat: <a href="tel:+62318484080">+62 31 8484080</a></li>
+                    <li><i class="fas fa-calendar-alt"></i> Tanggal: Senin, 9 Juni 2025</li>
+                    <li><i class="fas fa-clock"></i> Waktu: <span id="current-time"></span></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main>
+            <section id="login-section" class="card hidden">
+                <div class="card-header">
+                    <h2><i class="fas fa-lock"></i> Login</h2>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Masukkan password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role-select">Peran</label>
+                        <select id="role-select" required>
+                            <option value="patient">Pasien</option>
+                            <option value="doctor">Dokter</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn primary">Masuk</button>
+                </form>
+                <p id="login-error" class="error"></p>
+            </section>
+
+            <section id="patient-section" class="card hidden">
+                <div class="card-header">
+                    <h2><i class="fas fa-user-plus"></i> Pendaftaran</h2>
+                    <button id="logout-patient" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+                <form id="registration-form">
+                    <div class="form-group">
+                        <label for="patient-name">Nama Pasien</label>
+                        <input type="text" id="patient-name" placeholder="Masukkan nama" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="poli-select">Poli</label>
+                        <select id="poli-select" required>
+                            <option value="kebidanan">Kebidanan</option>
+                            <option value="umum">Umum</option>
+                            <option value="penyakit-dalam">Penyakit Dalam</option>
+                            <option value="gigi">Gigi</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="schedule-select">Jadwal</label>
+                        <select id="schedule-select" required>
+                            <!-- Diisi oleh JavaScript -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn primary">Daftar</button>
+                </form>
+                <div id="patient-confirmation" class="notification hidden">
+                    <p id="confirmation-text"></p>
+                    <div id="qrcode" class="qrcode"></div>
+                </div>
+            </section>
+
+            <section id="doctor-section" class="card hidden">
+                <div class="card-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Jadwal Dokter</h2>
+                    <button id="logout-doctor" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+                <div id="doctor-schedule" class="schedule-list"></div>
+            </section>
+
+            <section id="admin-section" class="card hidden">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-line"></i> Rekap Layanan</h2>
+                    <button id="logout-admin" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+                <div id="admin-recap"></div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Kontak</h3>
+                <p><i class="fas fa-map-marker-alt"></i> PT. RRQ JUARA M1, JAKARTA</p>
+                <p><i class="fas fa-phone"></i> +62 77777777</p>
+            </div>
+            <div class="footer-section">
+                <h3>Sosial Media</h3>
+                <div class="social-links">
+                    <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <p class="footer-bottom">© 2025 RSU Delima. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
