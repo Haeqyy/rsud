@@ -40,7 +40,7 @@ body {
     list-style: none;
     position: absolute;
     top: 60px;
-    rightDo you have any other questions or tasks related to the hamburger menu animation that I can assist with? right: 0;
+    right: 0;
     width: 100%;
     background: #34495e;
     padding: 1rem 0;
@@ -92,18 +92,6 @@ body {
 }
 
 .hamburger span:nth-child(2) {
-    transition-delay: 0.05s;
-}
-
-.hamburger span:nth-child(3) {
-    transition-delay: 0s;
-}
-
-.hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.active span:nth-child(2) {
     opacity: 0;
     transform: translateX(-10px);
 }
@@ -125,10 +113,20 @@ body {
     text-decoration: none;
     border-radius: 5px;
     transition: background 0.3s;
+    border: none; /* Ensure buttons don't have default borders */
+    cursor: pointer;
 }
 
 .btn:hover {
     background: #16a085;
+}
+
+.btn.logout {
+    background: #e74c3c;
+}
+
+.btn.logout:hover {
+    background: #c0392b;
 }
 
 .language-switch a {
@@ -142,7 +140,8 @@ body {
 
 /* Splash Screen */
 .splash-screen {
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('haqqilovemarsha.png');
+    /* Using a generic placeholder image as no specific image was provided in the context */
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('haqqilovemarsha.png'); 
     background-size: cover;
     background-position: center;
     height: 50vh;
@@ -176,10 +175,12 @@ body {
     padding: 1rem;
     border-radius: 5px;
     margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Added shadow */
 }
 
 .sidebar-content h3 {
     margin-bottom: 1rem;
+    color: #2c3e50;
 }
 
 .sidebar-content ul {
@@ -188,6 +189,33 @@ body {
 
 .sidebar-content li {
     margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-content li i {
+    margin-right: 0.5rem;
+    color: #1abc9c;
+}
+
+.sidebar-content li a {
+    color: #333; /* Ensure link color is readable */
+    text-decoration: none;
+}
+
+.sidebar-content li a:hover {
+    text-decoration: underline;
+}
+
+/* Status text colors */
+#status-text.open {
+    color: #27ae60; /* Green for open */
+    font-weight: bold;
+}
+
+#status-text.closed {
+    color: #e74c3c; /* Red for closed */
+    font-weight: bold;
 }
 
 /* Main Content */
@@ -197,16 +225,30 @@ main {
 
 .card {
     background: #fff;
-    padding: 1rem;
-    border-radius: 5px;
-    margin-bottom: 1rem;
+    padding: 1.5rem; /* Increased padding */
+    border-radius: 8px; /* Slightly more rounded corners */
+    margin-bottom: 1.5rem; /* Increased margin */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* More prominent shadow */
 }
 
 .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; /* Increased margin */
+    padding-bottom: 10px; /* Add padding at the bottom */
+    border-bottom: 1px solid #eee; /* Add a subtle separator */
+}
+
+.card-header h2, .card-header h3 {
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+}
+
+.card-header h2 i, .card-header h3 i {
+    margin-right: 0.75rem;
+    color: #1abc9c;
 }
 
 .form-group {
@@ -216,54 +258,184 @@ main {
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #555;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.75rem; /* Increased padding */
     border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 1rem;
 }
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #1abc9c;
+    box-shadow: 0 0 5px rgba(26, 188, 156, 0.5);
+}
+
+/* Styles for radio buttons in form-group */
+.form-group div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input[type="radio"] {
+    width: auto; /* Allow radio buttons to take natural width */
+    margin-right: 0.5rem;
+}
+
+.form-group label[for] { /* Specific style for labels associated with radio/checkbox */
+    display: inline-block; /* Keep label next to radio button */
+    margin-bottom: 0; /* Remove bottom margin for inline labels */
+    font-weight: normal; /* Normal font weight for radio labels */
+}
+
 
 .notification {
     background: #e8f4f8;
     padding: 1rem;
     border-radius: 5px;
+    border-left: 5px solid #1abc9c; /* Added a colored left border */
+    margin-top: 1.5rem;
+}
+
+.notification p {
+    margin-bottom: 0.5rem;
 }
 
 .qrcode {
     margin-top: 1rem;
     text-align: center;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    text-align: center;
+    opacity: 0; /* Hidden by default, animated in JS */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.message {
+    color: green;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    text-align: center;
+    opacity: 0; /* Hidden by default, animated in JS */
+    transition: opacity 0.3s ease-in-out;
+}
+
+
+/* Schedule List Styles (for patient and doctor views) */
+.schedule-list {
+    margin-top: 1rem;
+}
+
+.schedule-item {
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.schedule-item h4 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.schedule-item p {
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+}
+
+.patient-list {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.patient-list li {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.2rem;
 }
 
 /* Footer */
 .footer {
     background: #2c3e50;
     color: #fff;
-    padding: 1rem;
+    padding: 1.5rem 1rem; /* Increased padding */
     margin-top: 2rem;
+    border-top-left-radius: 8px; /* Rounded top corners */
+    border-top-right-radius: 8px;
 }
 
 .footer-content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem; /* Increased gap */
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Subtle separator */
 }
 
 .footer-section h3 {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem; /* Increased margin */
+    color: #1abc9c;
+}
+
+.footer-section p {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.footer-section p i {
+    margin-right: 0.5rem;
+    color: #fff;
 }
 
 .social-links a {
     color: #fff;
     margin-right: 1rem;
-    font-size: 1.2rem;
+    font-size: 1.5rem; /* Increased icon size */
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: #1abc9c;
 }
 
 .footer-bottom {
     text-align: center;
     margin-top: 1rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+}
+
+/* Utility Classes for Spacing */
+.mt-4 {
+    margin-top: 1.5rem; /* Equivalent to Bootstrap's mt-4 */
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem; /* Equivalent to Bootstrap's mb-4 */
+}
+
+.ml-2 {
+    margin-left: 1rem; /* Equivalent to Bootstrap's ml-2 */
 }
 
 /* Media Queries */
@@ -280,7 +452,7 @@ main {
 
     .container {
         flex-direction: row;
-        gap: 1rem;
+        gap: 1.5rem; /* Adjusted gap for larger screens */
     }
 
     .sidebar {
@@ -342,5 +514,5 @@ main {
 
 /* Hidden Utility */
 .hidden {
-    display: none;
+    display: none !important; /* Use !important to ensure it overrides other styles */
 }
