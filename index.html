@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -85,9 +87,17 @@
 
             <section id="patient-section" class="card hidden">
                 <div class="card-header">
-                    <h2><i class="fas fa-user-plus"></i> Pendaftaran</h2>
+                    <h2><i class="fas fa-user-plus"></i> Pendaftaran Pasien</h2>
                     <button id="logout-patient" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
                 </div>
+                <!-- Display Doctor Schedule for Patients -->
+                <div class="card-header mt-4">
+                    <h3><i class="fas fa-calendar-check"></i> Jadwal Dokter Tersedia</h3>
+                </div>
+                <div id="patient-doctor-schedule" class="schedule-list mb-4">
+                    <!-- Doctor schedules will be loaded here for patients -->
+                </div>
+
                 <form id="registration-form">
                     <div class="form-group">
                         <label for="patient-name">Nama Pasien</label>
@@ -96,10 +106,7 @@
                     <div class="form-group">
                         <label for="poli-select">Poli</label>
                         <select id="poli-select" required>
-                            <option value="kebidanan">Kebidanan</option>
-                            <option value="umum">Umum</option>
-                            <option value="penyakit-dalam">Penyakit Dalam</option>
-                            <option value="gigi">Gigi</option>
+                            <!-- Poli options will be dynamically loaded here by populatePoliDropdown -->
                         </select>
                     </div>
                     <div class="form-group">
@@ -118,17 +125,87 @@
 
             <section id="doctor-section" class="card hidden">
                 <div class="card-header">
-                    <h2><i class="fas fa-calendar-alt"></i> Jadwal Dokter</h2>
+                    <h2><i class="fas fa-calendar-alt"></i> Dashboard Dokter</h2>
                     <button id="logout-doctor" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+
+                <!-- Add New Polyclinic Form -->
+                <div class="card-header mt-4">
+                    <h3><i class="fas fa-plus-circle"></i> Tambah Poli Baru</h3>
+                </div>
+                <form id="add-poli-form" class="mb-4">
+                    <div class="form-group">
+                        <label for="new-poli-name">Nama Poli Baru</label>
+                        <input type="text" id="new-poli-name" placeholder="Contoh: Anak" required>
+                    </div>
+                    <button type="submit" class="btn primary">Tambah Poli</button>
+                    <p id="add-poli-message" class="message"></p>
+                </form>
+
+                <!-- Add New Doctor Schedule Form -->
+                <div class="card-header mt-4">
+                    <h3><i class="fas fa-user-md"></i> Tambah Jadwal Dokter Baru</h3>
+                </div>
+                <form id="add-doctor-schedule-form">
+                    <div class="form-group">
+                        <label for="schedule-poli-select">Poli</label>
+                        <select id="schedule-poli-select" required>
+                            <!-- Poli options will be dynamically loaded here by populatePoliDropdown -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="schedule-date">Tanggal</label>
+                        <input type="date" id="schedule-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="schedule-time">Waktu</label>
+                        <input type="time" id="schedule-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="schedule-doctor">Nama Dokter</label>
+                        <input type="text" id="schedule-doctor" placeholder="Contoh: Dr. Fuji" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="schedule-capacity">Kapasitas Pasien</label>
+                        <input type="number" id="schedule-capacity" value="20" min="1" required>
+                    </div>
+                    <button type="submit" class="btn primary">Tambah Jadwal</button>
+                    <p id="add-schedule-message" class="message"></p>
+                </form>
+
+                <!-- Existing Doctor Schedules -->
+                <div class="card-header mt-4">
+                    <h3><i class="fas fa-list-alt"></i> Jadwal Saat Ini</h3>
                 </div>
                 <div id="doctor-schedule" class="schedule-list"></div>
             </section>
 
             <section id="admin-section" class="card hidden">
                 <div class="card-header">
-                    <h2><i class="fas fa-chart-line"></i> Rekap Layanan</h2>
+                    <h2><i class="fas fa-chart-line"></i> Rekap Layanan Admin</h2>
                     <button id="logout-admin" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
                 </div>
+
+                <!-- PDF Report Generation Form -->
+                <div class="card-header mt-4">
+                    <h3><i class="fas fa-file-pdf"></i> Rekap Laporan PDF</h3>
+                </div>
+                <form id="generate-pdf-form" class="mb-4">
+                    <div class="form-group">
+                        <label>Pilih Periode:</label>
+                        <div>
+                            <input type="radio" id="recap-weekly" name="recap-period" value="weekly" checked>
+                            <label for="recap-weekly">Mingguan</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="recap-monthly" name="recap-period" value="monthly">
+                            <label for="recap-monthly">Bulanan</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn primary"><i class="fas fa-download"></i> Buat PDF</button>
+                    <p id="pdf-message" class="message"></p>
+                </form>
+
                 <div id="admin-recap"></div>
             </section>
         </main>
