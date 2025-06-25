@@ -2,212 +2,208 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sistem Perjanjian - RSU Delima</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSU Delima - Sistem Perjanjian</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">RD</div>
+        <div class="logo">RSU Delima</div>
         <div class="navbar-right">
+            <ul class="nav-menu">
+                <li><a href="#" id="start-link">Beranda</a></li>
+                <li><a href="#">Profil</a></li>
+                <li><a href="#">Fasilitas</a></li>
+                <li><a href="#">Pelayanan</a></li>
+                <li><a href="#">Kontak</a></li>
+            </ul>
             <div class="nav-actions">
-                <a href="#" id="login-link" class="btn">Login</a>
                 <div class="language-switch">
-                    <a href="#" class="lang active" data-lang="id"><i class="fas fa-globe"></i> ID</a> | 
-                    <a href="#" class="lang" data-lang="en"><i class="fas fa-globe"></i> EN</a>
+                    <a href="#" class="lang active">ID</a> | 
+                    <a href="#" class="lang">EN</a>
+                </div>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
             </div>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
         </div>
-        <ul class="nav-menu">
-            <li><a href="#">Beranda</a></li>
-            <li><a href="#">Profil</a></li>
-            <li><a href="#">Fasilitas</a></li>
-            <li><a href="#">Pelayanan</a></li>
-            <li><a href="#">Kontak</a></li>
-        </ul>
     </nav>
 
-    <section class="splash-screen">
+    <div class="splash-screen">
         <div class="splash-content">
             <h1>Selamat Datang di RSU Delima</h1>
             <p>Jadwalkan kunjungan Anda dengan mudah dan cepat!</p>
-            <a href="#" id="start-link" class="btn primary">Mulai Sekarang</a>
+            <a href="#" id="start-now" class="btn">Mulai Sekarang</a>
         </div>
-    </section>
+    </div>
 
-    <div class="container">
+    <div class="container hidden">
         <aside class="sidebar">
             <div class="sidebar-content">
-                <h3><i class="fas fa-info-circle"></i> Info Cepat</h3>
+                <h3>Info Cepat</h3>
                 <ul>
                     <li><i class="fas fa-clock"></i> Jam Operasional: 08:00 - 20:00 WIB</li>
-                    <li id="status-operational"><i class="fas fa-store"></i> Status: <span id="status-text"></span></li>
-                    <li><i class="fas fa-phone"></i> Darurat: <a href="tel:+62318484080">+62 31 8484080</a></li>
-                    <li><i class="fas fa-calendar-alt"></i> Tanggal: Rabu, 11 Juni 2025</li>
-                    <li><i class="fas fa-clock"></i> Waktu: <span id="current-time">10:35 WIB</span></li>
+                    <li><i class="fas fa-info-circle"></i> Status: <span id="status-text"></span></li>
+                    <li><i class="fas fa-phone"></i> Darurat: +62 31 8484080</li>
+                    <li><i class="fas fa-calendar"></i> Tanggal: Rabu, 25 Juni 2025</li>
+                    <li><i class="fas fa-clock"></i> Waktu: <span id="current-time"></span></li>
                 </ul>
             </div>
         </aside>
 
         <main>
-            <section id="login-section" class="card hidden">
+            <div class="card" id="login-section">
                 <div class="card-header">
-                    <h2><i class="fas fa-lock"></i> Login</h2>
+                    <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
                 </div>
                 <form id="login-form">
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" id="username" placeholder="Masukkan username" required>
+                        <input type="text" id="username" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="Masukkan password" required>
+                        <input type="password" id="password" required>
                     </div>
                     <div class="form-group">
                         <label for="role-select">Peran</label>
-                        <select id="role-select" required>
+                        <select id="role-select">
                             <option value="patient">Pasien</option>
                             <option value="doctor">Dokter</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn primary">Masuk</button>
+                    <button type="submit" class="btn">Masuk</button>
+                    <div id="login-error" class="error"></div>
                 </form>
-                <p id="login-error" class="error"></p>
-            </section>
+            </div>
 
-            <section id="patient-section" class="card hidden">
+            <div class="card hidden" id="patient-section">
                 <div class="card-header">
-                    <h2><i class="fas fa-user-plus"></i> Pendaftaran Pasien</h2>
-                    <button id="logout-patient" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    <h2><i class="fas fa-user"></i> Pendaftaran Pasien</h2>
+                    <button id="logout-patient" class="btn logout">Logout</button>
                 </div>
-                <!-- Display Doctor Schedule for Patients -->
-                <div class="card-header mt-4">
-                    <h3><i class="fas fa-calendar-check"></i> Jadwal Dokter Tersedia</h3>
-                </div>
-                <div id="patient-doctor-schedule" class="schedule-list mb-4">
-                    <!-- Doctor schedules will be loaded here for patients -->
-                </div>
-
+                <form id="patient-info-form">
+                    <div class="form-group">
+                        <label for="patient-birthdate">Tanggal Lahir</label>
+                        <input type="date" id="patient-birthdate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-medical-record">Nomor Rekam Medis</label>
+                        <input type="text" id="patient-medical-record" required>
+                    </div>
+                    <button type="submit" class="btn">Simpan Data Pribadi</button>
+                    <div id="patient-info-message" class="message"></div>
+                </form>
+                <h3>Jadwal Dokter Tersedia</h3>
+                <div id="patient-doctor-schedule" class="schedule-list"></div>
                 <form id="registration-form">
                     <div class="form-group">
                         <label for="patient-name">Nama Pasien</label>
-                        <input type="text" id="patient-name" placeholder="Masukkan nama" required>
+                        <input type="text" id="patient-name" required>
                     </div>
                     <div class="form-group">
                         <label for="poli-select">Poli</label>
-                        <select id="poli-select" required>
-                            <!-- Poli options will be dynamically loaded here by populatePoliDropdown -->
-                        </select>
+                        <select id="poli-select"></select>
                     </div>
                     <div class="form-group">
                         <label for="schedule-select">Jadwal</label>
-                        <select id="schedule-select" required>
-                            <!-- Diisi oleh JavaScript -->
-                        </select>
+                        <select id="schedule-select"></select>
                     </div>
-                    <button type="submit" class="btn primary">Daftar</button>
+                    <button type="submit" class="btn">Daftar</button>
                 </form>
                 <div id="patient-confirmation" class="notification hidden">
                     <p id="confirmation-text"></p>
                     <div id="qrcode" class="qrcode"></div>
                 </div>
-            </section>
+                <h3>Jadwal Saya</h3>
+                <div id="patient-appointments" class="schedule-list"></div>
+            </div>
 
-            <section id="doctor-section" class="card hidden">
+            <div class="card hidden" id="doctor-section">
                 <div class="card-header">
-                    <h2><i class="fas fa-calendar-alt"></i> Dashboard Dokter</h2>
-                    <button id="logout-doctor" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    <h2><i class="fas fa-user-md"></i> Dashboard Dokter</h2>
+                    <button id="logout-doctor" class="btn logout">Logout</button>
                 </div>
+                <h3>Biodata Dokter</h3>
+                <div id="doctor-biodata" class="biodata"></div>
+                <h3>Jadwal Saya</h3>
+                <div id="doctor-schedule" class="schedule-list"></div>
+            </div>
 
-                <!-- Add New Polyclinic Form -->
-                <div class="card-header mt-4">
-                    <h3><i class="fas fa-plus-circle"></i> Tambah Poli Baru</h3>
+            <div class="card hidden" id="admin-section">
+                <div class="card-header">
+                    <h2><i class="fas fa-user-shield"></i> Rekap Layanan Admin</h2>
+                    <button id="logout-admin" class="btn logout">Logout</button>
                 </div>
-                <form id="add-poli-form" class="mb-4">
+                <form id="add-poli-form">
                     <div class="form-group">
                         <label for="new-poli-name">Nama Poli Baru</label>
-                        <input type="text" id="new-poli-name" placeholder="Contoh: Anak" required>
+                        <input type="text" id="new-poli-name">
                     </div>
-                    <button type="submit" class="btn primary">Tambah Poli</button>
-                    <p id="add-poli-message" class="message"></p>
+                    <button type="submit" class="btn">Tambah Poli</button>
+                    <div id="add-poli-message" class="message"></div>
                 </form>
-
-                <!-- Add New Doctor Schedule Form -->
-                <div class="card-header mt-4">
-                    <h3><i class="fas fa-user-md"></i> Tambah Jadwal Dokter Baru</h3>
-                </div>
-                <form id="add-doctor-schedule-form">
+                <form id="add-doctor-form">
                     <div class="form-group">
-                        <label for="schedule-poli-select">Poli</label>
-                        <select id="schedule-poli-select" required>
-                            <!-- Poli options will be dynamically loaded here by populatePoliDropdown -->
-                        </select>
+                        <label for="new-doctor-username">Username Dokter Baru</label>
+                        <input type="text" id="new-doctor-username" required>
                     </div>
                     <div class="form-group">
-                        <label for="schedule-date">Tanggal</label>
-                        <input type="date" id="schedule-date" required>
+                        <label for="new-doctor-password">Password Dokter Baru</label>
+                        <input type="password" id="new-doctor-password" required>
                     </div>
-                    <div class="form-group">
-                        <label for="schedule-time">Waktu</label>
-                        <input type="time" id="schedule-time" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="schedule-doctor">Nama Dokter</label>
-                        <input type="text" id="schedule-doctor" placeholder="Contoh: Dr. Fuji" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="schedule-capacity">Kapasitas Pasien</label>
-                        <input type="number" id="schedule-capacity" value="20" min="1" required>
-                    </div>
-                    <button type="submit" class="btn primary">Tambah Jadwal</button>
-                    <p id="add-schedule-message" class="message"></p>
+                    <button type="submit" class="btn">Tambah Dokter</button>
+                    <div id="add-doctor-message" class="message"></div>
                 </form>
-
-                <!-- Existing Doctor Schedules -->
-                <div class="card-header mt-4">
-                    <h3><i class="fas fa-list-alt"></i> Jadwal Saat Ini</h3>
-                </div>
-                <div id="doctor-schedule" class="schedule-list"></div>
-            </section>
-
-            <section id="admin-section" class="card hidden">
-                <div class="card-header">
-                    <h2><i class="fas fa-chart-line"></i> Rekap Layanan Admin</h2>
-                    <button id="logout-admin" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                </div>
-
-                <!-- PDF Report Generation Form -->
-                <div class="card-header mt-4">
-                    <h3><i class="fas fa-file-pdf"></i> Rekap Laporan PDF</h3>
-                </div>
-                <form id="generate-pdf-form" class="mb-4">
+                <form id="admin-add-doctor-schedule-form">
+                    <div class="form-group">
+                        <label for="admin-schedule-poli-select">Poli</label>
+                        <select id="admin-schedule-poli-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-schedule-doctor">Dokter</label>
+                        <select id="admin-schedule-doctor"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-schedule-date">Tanggal</label>
+                        <input type="date" id="admin-schedule-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-schedule-time">Waktu</label>
+                        <input type="time" id="admin-schedule-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-schedule-capacity">Kapasitas Pasien</label>
+                        <input type="number" id="admin-schedule-capacity" min="1" required>
+                    </div>
+                    <button type="submit" class="btn">Tambah Jadwal Dokter</button>
+                    <div id="admin-add-schedule-message" class="message"></div>
+                </form>
+                <h3>Rekap Pasien</h3>
+                <div id="admin-patient-recap" class="schedule-list"></div>
+                <h3>Rekap Layanan</h3>
+                <div id="admin-recap" class="schedule-list"></div>
+                <form id="generate-pdf-form">
                     <div class="form-group">
                         <label>Pilih Periode:</label>
                         <div>
-                            <input type="radio" id="recap-weekly" name="recap-period" value="weekly" checked>
-                            <label for="recap-weekly">Mingguan</label>
+                            <input type="radio" id="weekly" name="recap-period" value="weekly" checked>
+                            <label for="weekly">Mingguan</label>
                         </div>
                         <div>
-                            <input type="radio" id="recap-monthly" name="recap-period" value="monthly">
-                            <label for="recap-monthly">Bulanan</label>
+                            <input type="radio" id="monthly" name="recap-period" value="monthly">
+                            <label for="monthly">Bulanan</label>
                         </div>
                     </div>
-                    <button type="submit" class="btn primary"><i class="fas fa-download"></i> Buat PDF</button>
-                    <p id="pdf-message" class="message"></p>
+                    <button type="submit" class="btn">Buat PDF</button>
+                    <div id="pdf-message" class="message"></div>
                 </form>
-
-                <div id="admin-recap"></div>
-            </section>
+            </div>
         </main>
     </div>
 
@@ -221,13 +217,15 @@
             <div class="footer-section">
                 <h3>Sosial Media</h3>
                 <div class="social-links">
-                    <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
-        <p class="footer-bottom">© 2025 RSU Delima. All rights reserved.</p>
+        <div class="footer-bottom">
+            © 2025 RSU Delima. All rights reserved.
+        </div>
     </footer>
 
     <script src="script.js"></script>
